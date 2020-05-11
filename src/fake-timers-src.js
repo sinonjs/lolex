@@ -1259,11 +1259,7 @@ function withGlobal(_global) {
             return uninstall(clock, config);
         };
 
-        clock.methods = config.toFake || [];
-
-        if (clock.methods.length === 0) {
-            clock.methods = keys(timers);
-        }
+        clock.methods = config.toFake || keys(timers);
 
         for (i = 0, l = clock.methods.length; i < l; i++) {
             if (clock.methods[i] === "hrtime") {
