@@ -4482,8 +4482,8 @@ describe("FakeTimers", function() {
             assert(typeof timers[0].id !== "undefined");
         });
 
-        it("passes arguments when installed - GitHub#122", function() {
-            var clock = FakeTimers.install({ toFake: ["nextTick"] });
+        it("nextTick passes arguments", function() {
+            var clock = FakeTimers.install();
             var called = false;
             process.nextTick(function(value) {
                 called = value;
@@ -4491,19 +4491,6 @@ describe("FakeTimers", function() {
             clock.runAll();
             assert(called);
             clock.uninstall();
-        });
-
-        it("does not install by default - GitHub#126", function(done) {
-            var clock = FakeTimers.install();
-            var spy = sinon.spy(clock, "nextTick");
-            var called = false;
-            process.nextTick(function(value) {
-                called = value;
-                assert(called);
-                assert(!spy.called);
-                clock.uninstall();
-                done();
-            }, true);
         });
     });
 

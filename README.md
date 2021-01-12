@@ -143,7 +143,7 @@ Parameter | Type | Default | Description
 --------- | ---- | ------- | ------------
 `config.target`| Object | global | installs FakeTimers onto the specified target context
 `config.now` | Number/Date | 0 | installs FakeTimers with the specified unix epoch
-`config.toFake` | String[] | ["setTimeout", "clearTimeout", "setImmediate", "clearImmediate","setInterval", "clearInterval", "Date", "requestAnimationFrame", "cancelAnimationFrame", "requestIdleCallback", "cancelIdleCallback", "hrtime"] | an array with explicit function names to hijack. *When not set, FakeTimers will automatically fake all methods **except** `nextTick`* e.g., `FakeTimers.install({ toFake: ["setTimeout","nextTick"]})` will fake only `setTimeout` and `nextTick`
+`config.toFake` | String[] | ["setTimeout", "clearTimeout", "setImmediate", "clearImmediate","setInterval", "clearInterval", "Date", "requestAnimationFrame", "cancelAnimationFrame", "requestIdleCallback", "cancelIdleCallback", "hrtime"] | an array with explicit function names to hijack. *When not set, FakeTimers will automatically fake all methods* e.g., `FakeTimers.install({ toFake: ["setTimeout","nextTick"]})` will fake only `setTimeout` and `nextTick`
 `config.loopLimit` | Number | 1000 | the maximum number of timers that will be run when calling runAll()
 `config.shouldAdvanceTime` | Boolean | false | tells FakeTimers to increment mocked time automatically based on the real system time shift (e.g. the mocked time will be incremented by 20ms for every 20ms change in the real system time)
 `config.advanceTimeDelta` | Number | 20 | relevant only when using with `shouldAdvanceTime: true`. increment mocked time by `advanceTimeDelta` ms every `advanceTimeDelta` ms change in the real system time.
@@ -308,6 +308,10 @@ Implements the `now` method of the [`Performance`](https://developer.mozilla.org
 ### `FakeTimers.withGlobal`
 
 In order to support creating clocks based on separate or sandboxed environments (such as JSDOM), FakeTimers exports a factory method which takes single argument `global`, which it inspects to figure out what to mock and what features to support. When invoking this function with a global, you will get back an object with `timers`, `createClock` and `install` - same as the regular FakeTimers exports only based on the passed in global instead of the global environment.
+
+## Promises and fake time
+
+If you use a Promise library like Bluebird, note that you should either call `clock.runMicrotasks()` or make sure to _not_ mock `nextTick`.
 
 ## Running tests
 
